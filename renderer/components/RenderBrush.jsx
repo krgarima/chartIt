@@ -12,11 +12,11 @@ const RenderBrush = ({ state, style, handleTimeRangeChange }) => {
 
   return (
     <ChartContainer
-      timeRange={channels.altitude.series.range()}
+      timeRange={channels.Fp1.series.range()}
       format="relative"
       trackerPosition={state.tracker}
     >
-      <ChartRow height="100" debug={false}>
+      <ChartRow height="30" debug={false}>
         <Brush
           timeRange={state.brushrange}
           allowSelectionClear
@@ -24,19 +24,19 @@ const RenderBrush = ({ state, style, handleTimeRangeChange }) => {
         />
         <YAxis
           id="axis1"
-          label="Altitude (ft)"
+          // label="Altitude (ft)"
           min={0}
-          max={channels.altitude.max}
+          // max={channels.altitude.max}
           width={70}
           type="linear"
-          format="d"
+          format="m"
         />
         <Charts>
           <AreaChart
             axis="axis1"
             style={style.areaChartStyle()}
-            columns={{ up: ["altitude"], down: [] }}
-            series={channels.altitude.series}
+            // columns={{ up: ["altitude"], down: [] }}
+            series={channels.Fp1.series}
           />
         </Charts>
       </ChartRow>

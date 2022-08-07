@@ -39,23 +39,25 @@ const RenderChannelsChart = ({
     timerange,
     displayChannels,
     channels,
-    maxTime,
-    minTime,
-    minDuration,
+    // maxTime,
+    // minTime,
+    // minDuration,
   } = state;
 
   const durationPerPixel = timerange.duration() / 800 / 1000;
+  // console.log(timerange.duration());
   const rows = [];
 
   for (let channelName of displayChannels) {
     const charts = [];
     let series = channels[channelName].series;
+    // console.log(series);
     _.forEach(channels[channelName].rollups, (rollup) => {
       if (rollup.duration < durationPerPixel * 2) {
         series = rollup.series.crop(timerange);
       }
     });
-
+    // console.log(series);
     charts.push(
       <LineChart
         key={`line-${channelName}`}
@@ -74,6 +76,7 @@ const RenderChannelsChart = ({
         value={channels[channelName].avg}
       />
     );
+    // console.log(charts);
 
     // Get the value at the current tracker position for the ValueAxis
     let value = "--";
@@ -92,12 +95,12 @@ const RenderChannelsChart = ({
     // Get the summary values for the LabelAxis
     const summary = [
       { label: "Max", value: speedFormat(channels[channelName].max) },
-      { label: "Avg", value: speedFormat(channels[channelName].avg) },
+      { label: "Min", value: speedFormat(channels[channelName].min) },
     ];
 
     rows.push(
       <ChartRow
-        height="100"
+        height="150"
         visible={channels[channelName].show}
         key={`row-${channelName}`}
       >
@@ -105,8 +108,8 @@ const RenderChannelsChart = ({
           id={`${channelName}_axis`}
           label={channels[channelName].label}
           values={summary}
-          min={0}
-          max={channels[channelName].max}
+          min={-50}
+          max={50}
           width={140}
           type="linear"
           format=",.1f"
@@ -115,7 +118,7 @@ const RenderChannelsChart = ({
         <ValueAxis
           id={`${channelName}_valueaxis`}
           value={value}
-          detail={channels[channelName].units}
+          // detail={channels[channelName].units}
           width={80}
           min={0}
           max={35}
@@ -130,13 +133,14 @@ const RenderChannelsChart = ({
       format="relative"
       showGrid={false}
       enablePanZoom
-      maxTime={maxTime}
-      minTime={minTime}
-      minDuration={minDuration}
+      // maxTime={maxTime}
+      // minTime={minTime}
+      // minDuration={minDuration}
       trackerPosition={state.tracker}
       onTimeRangeChanged={handleTimeRangeChange}
       onChartResize={(width) => handleChartResize(width)}
       onTrackerChanged={handleTrackerChanged}
+      timeAxisTickCount={15}
     >
       {rows}
     </ChartContainer>
