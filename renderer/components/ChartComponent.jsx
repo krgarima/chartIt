@@ -24,8 +24,6 @@ const style = styler([
   { key: "FP2", color: "#e2e2e2" },
   { key: "F3", color: "#e2e2e2" },
   { key: "F4", color: "#e2e2e2" },
-  { key: "T3", color: "#e2e2e2" },
-  { key: "T4", color: "#e2e2e2" },
   { key: "Fz", color: "#e2e2e2" },
   { key: "Pz", color: "#e2e2e2" },
 ]);
@@ -54,16 +52,6 @@ export default function Chart() {
       series: null,
       show: true,
     },
-    T3: {
-      label: "T3",
-      series: null,
-      show: true,
-    },
-    T4: {
-      label: "T4",
-      series: null,
-      show: true,
-    },
     Fz: {
       label: "Fz",
       series: null,
@@ -76,8 +64,8 @@ export default function Chart() {
     },
   };
 
-  const channelNames = ["Fp1", "FP2", "F3", "F4", "T3", "T4", "Fz", "Pz"];
-  const displayChannels = ["Fp1", "FP2", "F3", "F4", "T3", "T4", "Fz", "Pz"];
+  const channelNames = ["Fp1", "FP2", "F3", "F4", "Fz", "Pz"];
+  const displayChannels = ["Fp1", "FP2", "F3", "F4", "Fz", "Pz"];
   const rollupLevels = ["1s", "5s", "15s", "25s"];
 
   const [state, setState] = useState({
@@ -91,6 +79,10 @@ export default function Chart() {
     tracker: null,
     timerange: initialRange,
     brushrange: new TimeRange([0, 3 * 1000]),
+  });
+  const [val, setVal] = useState({
+    min: -100,
+    max: 100,
   });
 
   useEffect(() => {
@@ -106,16 +98,14 @@ export default function Chart() {
         if (i > 0) {
           points["Pz"].push([i * 4, data[i].Pz]);
           points["Fz"].push([i * 4, data[i].Fz]);
-          points["T4"].push([i * 4, data[i].T4]);
-          points["T3"].push([i * 4, data[i].T3]);
+          // points["T4"].push([i * 4, data[i].T4]);
+          // points["T3"].push([i * 4, data[i].T3]);
           points["F4"].push([i * 4, data[i].F4]);
           points["F3"].push([i * 4, data[i].F3]);
           points["FP2"].push([i * 4, data[i].FP2]);
           points["Fp1"].push([i * 4, data[i].Fp1]);
         }
       }
-
-      console.log(points);
 
       for (let channelName of channelNames) {
         // The TimeSeries itself, for this channel
@@ -135,7 +125,6 @@ export default function Chart() {
               }),
             };
           });
-
           channels[channelName].rollups = rollups;
         }
         channels[channelName].series = series;
@@ -157,7 +146,6 @@ export default function Chart() {
         // minTime,
         // maxTime,
         // minDuration,
-        // DO IT LATER ---------
       });
     }, 0);
   }, []);
@@ -180,7 +168,7 @@ export default function Chart() {
   };
 
   return (
-    <div className="w-full h-fit border-blue-800 border-2 mt-20 ">
+    <div className="w-full h-fit border-blue-800 border-2 mt-10 ">
       <div className="row ml-40 mb-10">
         <div className="col-md-12" style={chartStyle}>
           <Resizable>
@@ -189,6 +177,7 @@ export default function Chart() {
                 state={state}
                 style={style}
                 handleTimeRangeChange={handleTimeRangeChange}
+                val={val}
               />
             ) : (
               <div>Loading.....</div>
@@ -213,42 +202,97 @@ export default function Chart() {
           </Resizable>
         </div>
       </div>
-      <button
-        className="border-2 m-2 p-2"
-        onClick={() =>
-          setState({
-            ...state,
-            timerange: new TimeRange([0, 3 * 1000]),
-            brushrange: new TimeRange([0, 3 * 1000]),
-          })
-        }
-      >
-        3 sec
-      </button>
-      <button
-        className="border-2 m-2 p-2"
-        onClick={() =>
-          setState({
-            ...state,
-            timerange: new TimeRange([0, 5 * 1000]),
-            brushrange: new TimeRange([0, 5 * 1000]),
-          })
-        }
-      >
-        5 sec
-      </button>
-      <button
-        className="border-2 m-2 p-2"
-        onClick={() =>
-          setState({
-            ...state,
-            timerange: new TimeRange([0, 7 * 1000]),
-            brushrange: new TimeRange([0, 7 * 1000]),
-          })
-        }
-      >
-        7 sec
-      </button>
+
+      <div>
+        <span>Range: </span>
+        <button
+          className="border-2 m-2 p-0.5"
+          onClick={() => setVal({ min: -100, max: 100 })}
+        >
+          100
+        </button>
+        <button
+          className="border-2 m-2 p-0.5"
+          onClick={() => setVal({ min: -200, max: 200 })}
+        >
+          200
+        </button>
+        <button
+          className="border-2 m-2 p-0.5"
+          onClick={() => setVal({ min: -300, max: 300 })}
+        >
+          300
+        </button>
+        <button
+          className="border-2 m-2 p-0.5"
+          onClick={() => setVal({ min: -400, max: 400 })}
+        >
+          400
+        </button>
+        <button
+          className="border-2 m-2 p-0.5"
+          onClick={() =>
+            setVal({
+              min: null,
+              max: null,
+            })
+          }
+        >
+          auto
+        </button>
+      </div>
+
+      <div>
+        <span>Time: </span>
+        <button
+          className="border-2 m-2 p-0.5"
+          onClick={() =>
+            setState({
+              ...state,
+              timerange: new TimeRange([0, 3 * 1000]),
+              brushrange: new TimeRange([0, 3 * 1000]),
+            })
+          }
+        >
+          3 sec
+        </button>
+        <button
+          className="border-2 m-2 p-0.5"
+          onClick={() =>
+            setState({
+              ...state,
+              timerange: new TimeRange([0, 5 * 1000]),
+              brushrange: new TimeRange([0, 5 * 1000]),
+            })
+          }
+        >
+          5 sec
+        </button>
+        <button
+          className="border-2 m-2 p-0.5"
+          onClick={() =>
+            setState({
+              ...state,
+              timerange: new TimeRange([0, 7 * 1000]),
+              brushrange: new TimeRange([0, 7 * 1000]),
+            })
+          }
+        >
+          7 sec
+        </button>
+        <button
+          className="border-2 m-2 p-0.5"
+          onClick={() =>
+            setState({
+              ...state,
+              timerange: new TimeRange([0, 10 * 1000]),
+              brushrange: new TimeRange([0, 10 * 1000]),
+            })
+          }
+        >
+          10 sec
+        </button>
+      </div>
     </div>
   );
 }

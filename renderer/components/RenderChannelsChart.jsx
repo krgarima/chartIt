@@ -34,6 +34,7 @@ const RenderChannelsChart = ({
   style,
   handleTimeRangeChange,
   handleTrackerChanged,
+  val,
 }) => {
   const {
     timerange,
@@ -45,19 +46,28 @@ const RenderChannelsChart = ({
   } = state;
 
   const durationPerPixel = timerange.duration() / 800 / 1000;
-  // console.log(timerange.duration());
   const rows = [];
 
   for (let channelName of displayChannels) {
     const charts = [];
     let series = channels[channelName].series;
-    // console.log(series);
+
     _.forEach(channels[channelName].rollups, (rollup) => {
       if (rollup.duration < durationPerPixel * 2) {
         series = rollup.series.crop(timerange);
+        console.log(parseInt(series.max(channelName), 10));
+        series;
       }
     });
-    // console.log(series);
+    channels[channelName].max = parseInt(
+      series.crop(timerange).max(channelName),
+      10
+    );
+    channels[channelName].min = parseInt(
+      series.crop(timerange).min(channelName),
+      10
+    );
+
     charts.push(
       <LineChart
         key={`line-${channelName}`}
@@ -76,7 +86,6 @@ const RenderChannelsChart = ({
         value={channels[channelName].avg}
       />
     );
-    // console.log(charts);
 
     // Get the value at the current tracker position for the ValueAxis
     let value = "--";
@@ -100,7 +109,7 @@ const RenderChannelsChart = ({
 
     rows.push(
       <ChartRow
-        height="150"
+        height="100"
         visible={channels[channelName].show}
         key={`row-${channelName}`}
       >
@@ -108,8 +117,8 @@ const RenderChannelsChart = ({
           id={`${channelName}_axis`}
           label={channels[channelName].label}
           values={summary}
-          min={-50}
-          max={50}
+          min={val.min ?? channels[channelName].min}
+          max={val.max ?? channels[channelName].max}
           width={140}
           type="linear"
           format=",.1f"
@@ -132,7 +141,6 @@ const RenderChannelsChart = ({
       timeRange={state.timerange}
       format="relative"
       showGrid={false}
-      enablePanZoom
       // maxTime={maxTime}
       // minTime={minTime}
       // minDuration={minDuration}

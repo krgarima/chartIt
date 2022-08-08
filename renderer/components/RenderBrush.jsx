@@ -16,26 +16,17 @@ const RenderBrush = ({ state, style, handleTimeRangeChange }) => {
       format="relative"
       trackerPosition={state.tracker}
     >
-      <ChartRow height="30" debug={false}>
+      <ChartRow height="25" debug={false}>
         <Brush
           timeRange={state.brushrange}
           allowSelectionClear
           onTimeRangeChanged={handleTimeRangeChange}
         />
-        <YAxis
-          id="axis1"
-          // label="Altitude (ft)"
-          min={0}
-          // max={channels.altitude.max}
-          width={70}
-          type="linear"
-          format="m"
-        />
+        <YAxis id="axis1" min={0} width={70} type="linear" format="m" />
         <Charts>
           <AreaChart
             axis="axis1"
             style={style.areaChartStyle()}
-            // columns={{ up: ["altitude"], down: [] }}
             series={channels.Fp1.series}
           />
         </Charts>
