@@ -9,7 +9,6 @@ function Next() {
   const [buttonText, setButtonText] = useState("Fetch Data Stream");
   const [listenerCount, setCount] = useState(0);
   const [packets, setPackets] = useState([]);
-  const [run, setRun] = useState(true);
 
   const getData = () => {
     ipcRenderer.on("device-data", (event, packets) => {
@@ -40,7 +39,7 @@ function Next() {
       </Head>
       <div className="grid grid-col-1 text-2xl w-full text-center">
         <img className="ml-auto mr-auto" src="/images/logo.png" />
-        <span>⚡ Render the Graph on this Page ⚡</span>
+        {/* <span>⚡ Render the Graph on this Page ⚡</span> */}
       </div>
 
       <div className="mt-4 w-full flex-wrap flex justify-center">
@@ -57,21 +56,16 @@ function Next() {
       </div>
 
       <div id="chartIt">
-        <span className="mt-4 w-full flex-wrap flex justify-center">
+        {/* <span className="mt-4 w-full flex-wrap flex justify-center">
           ⚡ Render Chart Here ⚡
-        </span>
-        {run && (
-          <div className="">
-            <Chart packets={packets} channelNum={0} />
-          </div>
-        )}
+        </span> */}
+
+        <Chart />
       </div>
 
       <div className="mt-10 w-full flex-wrap flex justify-center">
         <Link href="/home">
-          <a className="btn-blue" onClick={() => setRun(false)}>
-            Go to home page
-          </a>
+          <a className="btn-blue">Go to home page</a>
         </Link>
       </div>
     </React.Fragment>

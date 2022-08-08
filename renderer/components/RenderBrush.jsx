@@ -22,11 +22,11 @@ const RenderBrush = ({ state, style, handleTimeRangeChange }) => {
           allowSelectionClear
           onTimeRangeChanged={handleTimeRangeChange}
         />
-        <YAxis id="axis1" min={0} width={70} type="linear" format="m" />
+        {/* <YAxis id="axis1" min={0} width={70} type="linear" format="m" /> */}
         <Charts>
           <AreaChart
             axis="axis1"
-            style={style.areaChartStyle()}
+            // style={style.areaChartStyle()}
             series={channels.Fp1.series}
           />
         </Charts>

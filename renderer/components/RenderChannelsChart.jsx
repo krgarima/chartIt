@@ -27,7 +27,7 @@ const baselineStyles = {
   },
 };
 
-const speedFormat = format(".1f");
+// const speedFormat = format(".1f");
 
 const RenderChannelsChart = ({
   state,
@@ -45,6 +45,7 @@ const RenderChannelsChart = ({
     // minDuration,
   } = state;
 
+  // console.log(timerange);
   const durationPerPixel = timerange.duration() / 800 / 1000;
   const rows = [];
 
@@ -55,7 +56,7 @@ const RenderChannelsChart = ({
     _.forEach(channels[channelName].rollups, (rollup) => {
       if (rollup.duration < durationPerPixel * 2) {
         series = rollup.series.crop(timerange);
-        console.log(parseInt(series.max(channelName), 10));
+        // console.log(parseInt(series.max(channelName), 10));
         series;
       }
     });
@@ -88,24 +89,24 @@ const RenderChannelsChart = ({
     );
 
     // Get the value at the current tracker position for the ValueAxis
-    let value = "--";
-    if (state.tracker) {
-      const approx =
-        (+state.tracker - +timerange.begin()) /
-        (+timerange.end() - +timerange.begin());
-      const ii = Math.floor(approx * series.size());
-      const i = series.bisect(new Date(state.tracker), ii);
-      const v = i < series.size() ? series.at(i).get(channelName) : null;
-      if (v) {
-        value = parseInt(v, 10);
-      }
-    }
+    // let value = "--";
+    // if (state.tracker) {
+    //   const approx =
+    //     (+state.tracker - +timerange.begin()) /
+    //     (+timerange.end() - +timerange.begin());
+    //   const ii = Math.floor(approx * series.size());
+    //   const i = series.bisect(new Date(state.tracker), ii);
+    //   const v = i < series.size() ? series.at(i).get(channelName) : null;
+    //   if (v) {
+    //     value = parseInt(v, 10);
+    //   }
+    // }
 
     // Get the summary values for the LabelAxis
-    const summary = [
-      { label: "Max", value: speedFormat(channels[channelName].max) },
-      { label: "Min", value: speedFormat(channels[channelName].min) },
-    ];
+    // const summary = [
+    //   { label: "Max", value: speedFormat(channels[channelName].max) },
+    //   { label: "Min", value: speedFormat(channels[channelName].min) },
+    // ];
 
     rows.push(
       <ChartRow
@@ -116,17 +117,17 @@ const RenderChannelsChart = ({
         <LabelAxis
           id={`${channelName}_axis`}
           label={channels[channelName].label}
-          values={summary}
+          // values={summary}
           min={val.min ?? channels[channelName].min}
           max={val.max ?? channels[channelName].max}
-          width={140}
+          width={150}
           type="linear"
           format=",.1f"
         />
         <Charts>{charts}</Charts>
         <ValueAxis
           id={`${channelName}_valueaxis`}
-          value={value}
+          // value={value}
           // detail={channels[channelName].units}
           width={80}
           min={0}
@@ -140,7 +141,7 @@ const RenderChannelsChart = ({
     <ChartContainer
       timeRange={state.timerange}
       format="relative"
-      showGrid={false}
+      showGrid={true}
       // maxTime={maxTime}
       // minTime={minTime}
       // minDuration={minDuration}
