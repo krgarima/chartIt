@@ -86,8 +86,6 @@ export default function Chart() {
     max: 100,
   });
 
-  const [timeAxisTickCountValue, setTimeAxisTickCountValue] = useState(3);
-
   const [activeTime, setActiveTime] = useState({
     three: false,
     five: true,
@@ -231,7 +229,7 @@ export default function Chart() {
                 state={state}
                 style={style}
                 handleTimeRangeChange={handleTimeRangeChange}
-                timeAxisTickCountValue={timeAxisTickCountValue}
+                // timeAxisTickCountValue={timeAxisTickCountValue}
                 val={val}
               />
             ) : (
@@ -354,7 +352,6 @@ export default function Chart() {
               timerange: new TimeRange([0, 3 * 1000]),
               brushrange: new TimeRange([0, 3 * 1000]),
             });
-            setTimeAxisTickCountValue(3);
             setActiveTime({
               three: true,
               five: false,
@@ -375,7 +372,7 @@ export default function Chart() {
               timerange: new TimeRange([0, 5 * 1000]),
               brushrange: new TimeRange([0, 5 * 1000]),
             });
-            setTimeAxisTickCountValue(5);
+
             setActiveTime({
               three: false,
               five: true,
@@ -396,7 +393,7 @@ export default function Chart() {
               timerange: new TimeRange([0, 7 * 1000]),
               brushrange: new TimeRange([0, 7 * 1000]),
             });
-            setTimeAxisTickCountValue(7);
+
             setActiveTime({
               three: false,
               five: false,
@@ -415,7 +412,7 @@ export default function Chart() {
               timerange: new TimeRange([0, 10 * 1000]),
               brushrange: new TimeRange([0, 10 * 1000]),
             });
-            setTimeAxisTickCountValue(10);
+
             setActiveTime({
               three: false,
               five: false,

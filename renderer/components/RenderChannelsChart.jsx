@@ -34,7 +34,6 @@ const RenderChannelsChart = ({
   style,
   handleTimeRangeChange,
   handleTrackerChanged,
-  timeAxisTickCountValue,
   val,
 }) => {
   const {
@@ -46,7 +45,6 @@ const RenderChannelsChart = ({
     // minDuration,
   } = state;
 
-  console.log(timeAxisTickCountValue);
   const durationPerPixel = timerange.duration() / 800 / 1000;
   const rows = [];
 
@@ -150,8 +148,8 @@ const RenderChannelsChart = ({
       onTimeRangeChanged={handleTimeRangeChange}
       onChartResize={(width) => handleChartResize(width)}
       onTrackerChanged={handleTrackerChanged}
-      timeAxisTickCount={timeAxisTickCountValue}
-      // hideTimeAxis={true}
+      timeAxisTickCount={4}
+      hideTimeAxis={true}
       showGridPosition="under"
     >
       {rows}
