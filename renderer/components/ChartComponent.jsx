@@ -15,7 +15,7 @@ import React from "react";
 // import { format } from "d3-format";
 import _ from "underscore";
 
-import { TimeSeries, TimeRange, avg, percentile, median } from "pondjs";
+import { TimeSeries, TimeRange } from "pondjs";
 import data from "../../public/myOutputFile.json";
 // import { stat } from "fs";
 
@@ -66,7 +66,6 @@ export default function Chart() {
 
   const channelNames = ["Fp1", "FP2", "F3", "F4", "Fz", "Pz"];
   const displayChannels = ["Fp1", "FP2", "F3", "F4", "Fz", "Pz"];
-  const rollupLevels = ["1s", "5s", "15s", "25s"];
 
   const [state, setState] = useState({
     ready: false,
@@ -74,8 +73,6 @@ export default function Chart() {
     channels,
     channelNames,
     displayChannels,
-    rollupLevels,
-    rollup: "1s",
     tracker: null,
     timerange: initialRange,
     brushrange: new TimeRange([0, 5 * 1000]),
@@ -102,7 +99,7 @@ export default function Chart() {
 
   useEffect(() => {
     setTimeout(() => {
-      const { channelNames, channels, displayChannels, rollupLevels } = state;
+      const { channelNames, channels } = state;
 
       const points = {};
       channelNames.forEach((channel) => {
@@ -120,8 +117,9 @@ export default function Chart() {
         }
       }
 
+      // console.log(points);
+
       for (let channelName of channelNames) {
-        // The TimeSeries itself, for this channel
         const series = new TimeSeries({
           name: channels[channelName].name,
           columns: ["time", channelName],
@@ -142,10 +140,9 @@ export default function Chart() {
         // }
         channels[channelName].series = series;
 
-        // Some simple statistics for each channel
-        channels[channelName].avg = parseInt(series.avg(channelName), 10);
-        channels[channelName].max = parseInt(series.max(channelName), 10);
-        channels[channelName].min = parseInt(series.min(channelName), 10);
+        // channels[channelName].avg = parseInt(series.avg(channelName), 10);
+        // channels[channelName].max = parseInt(series.max(channelName), 10);
+        // channels[channelName].min = parseInt(series.min(channelName), 10);
       }
 
       // const minTime = channels.altitude.series.range().begin();
@@ -180,6 +177,8 @@ export default function Chart() {
     //   });
     // }
   };
+
+  // console.log(channels);
 
   return (
     <div className="w-full h-fit mt-15 flex flex-col items-center">
@@ -229,7 +228,6 @@ export default function Chart() {
                 state={state}
                 style={style}
                 handleTimeRangeChange={handleTimeRangeChange}
-                // timeAxisTickCountValue={timeAxisTickCountValue}
                 val={val}
               />
             ) : (

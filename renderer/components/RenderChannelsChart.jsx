@@ -27,8 +27,6 @@ const baselineStyles = {
   },
 };
 
-// const speedFormat = format(".1f");
-
 const RenderChannelsChart = ({
   state,
   style,
@@ -45,20 +43,20 @@ const RenderChannelsChart = ({
     // minDuration,
   } = state;
 
-  const durationPerPixel = timerange.duration() / 800 / 1000;
+  // const durationPerPixel = timerange.duration() / 800 / 1000;
   const rows = [];
 
   for (let channelName of displayChannels) {
     const charts = [];
     let series = channels[channelName].series;
 
-    _.forEach(channels[channelName].rollups, (rollup) => {
-      if (rollup.duration < durationPerPixel * 2) {
-        series = rollup.series.crop(timerange);
-        // console.log(parseInt(series.max(channelName), 10));
-        series;
-      }
-    });
+    // _.forEach(channels[channelName].rollups, (rollup) => {
+    //   if (rollup.duration < durationPerPixel * 2) {
+    //     series = rollup.series.crop(timerange);
+    //     // console.log(parseInt(series.max(channelName), 10));
+    //     series;
+    //   }
+    // });
     channels[channelName].max = parseInt(
       series.crop(timerange).max(channelName),
       10
@@ -148,8 +146,8 @@ const RenderChannelsChart = ({
       onTimeRangeChanged={handleTimeRangeChange}
       onChartResize={(width) => handleChartResize(width)}
       onTrackerChanged={handleTrackerChanged}
-      timeAxisTickCount={4}
-      hideTimeAxis={true}
+      timeAxisTickCount={5}
+      hideTimeAxis={false}
       showGridPosition="under"
     >
       {rows}
