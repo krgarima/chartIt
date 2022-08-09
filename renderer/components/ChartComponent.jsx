@@ -80,9 +80,26 @@ export default function Chart() {
     timerange: initialRange,
     brushrange: new TimeRange([0, 5 * 1000]),
   });
+
   const [val, setVal] = useState({
     min: -100,
     max: 100,
+  });
+
+  const [timeAxisTickCountValue, setTimeAxisTickCountValue] = useState(3);
+
+  const [activeTime, setActiveTime] = useState({
+    three: false,
+    five: true,
+    seven: false,
+    ten: false,
+  });
+  const [range, setRange] = useState({
+    R100: false,
+    R200: true,
+    R300: false,
+    R400: false,
+    Rauto: false,
   });
 
   useEffect(() => {
@@ -168,7 +185,6 @@ export default function Chart() {
 
   return (
     <div className="w-full h-fit mt-15 flex flex-col items-center">
-      {/* <p>Chart</p> */}
       <div className="row mt-10 mb-10">
         <div className="col-md-12 " style={chartStyle}>
           <div className="w-full flex justify-between">
@@ -215,6 +231,7 @@ export default function Chart() {
                 state={state}
                 style={style}
                 handleTimeRangeChange={handleTimeRangeChange}
+                timeAxisTickCountValue={timeAxisTickCountValue}
                 val={val}
               />
             ) : (
@@ -246,37 +263,80 @@ export default function Chart() {
       <div className="ml-20 mt-5">
         <span>Range: </span>
         <button
-          className="border-2 m-2 p-0.5"
-          onClick={() => setVal({ min: -100, max: 100 })}
+          className={range.R100 ? "border-4 m-2 p-1" : "border-2 m-2 p-0.5"}
+          onClick={() => {
+            setVal({ min: -50, max: 50 });
+            setRange({
+              R100: true,
+              R200: false,
+              R300: false,
+              R400: false,
+              Rauto: false,
+            });
+          }}
         >
           100
         </button>
         <button
-          className="border-2 m-2 p-0.5"
-          onClick={() => setVal({ min: -200, max: 200 })}
+          className={range.R200 ? "border-4 m-2 p-1" : "border-2 m-2 p-0.5"}
+          onClick={() => {
+            setVal({ min: -100, max: 100 });
+            setRange({
+              R100: false,
+              R200: true,
+              R300: false,
+              R400: false,
+              Rauto: false,
+            });
+          }}
         >
           200
         </button>
         <button
-          className="border-2 m-2 p-0.5"
-          onClick={() => setVal({ min: -300, max: 300 })}
+          className={range.R300 ? "border-4 m-2 p-1" : "border-2 m-2 p-0.5"}
+          onClick={() => {
+            setVal({ min: -150, max: 150 });
+            setRange({
+              R100: false,
+              R200: false,
+              R300: true,
+              R400: false,
+              Rauto: false,
+            });
+          }}
         >
           300
         </button>
         <button
-          className="border-2 m-2 p-0.5"
-          onClick={() => setVal({ min: -400, max: 400 })}
+          className={range.R400 ? "border-4 m-2 p-1" : "border-2 m-2 p-0.5"}
+          onClick={() => {
+            setVal({ min: -200, max: 200 });
+            setRange({
+              R100: false,
+              R200: false,
+              R300: false,
+              R400: true,
+              Rauto: false,
+            });
+          }}
         >
           400
         </button>
         <button
-          className="border-2 m-2 p-0.5"
-          onClick={() =>
+          className={range.Rauto ? "border-4 m-2 p-1" : "border-2 m-2 p-0.5"}
+          onClick={() => {
             setVal({
               min: null,
               max: null,
-            })
-          }
+            });
+            setRange({
+              R100: false,
+              R200: false,
+              R300: false,
+              R400: false,
+              Rauto: true,
+            });
+          }}
         >
           auto
         </button>
@@ -285,50 +345,84 @@ export default function Chart() {
       <div className="ml-20">
         <span>Time: </span>
         <button
-          className="border-2 m-2 p-0.5"
-          onClick={() =>
+          className={
+            activeTime.three ? "border-4 m-2 p-1" : "border-2 m-2 p-0.5"
+          }
+          onClick={() => {
             setState({
               ...state,
               timerange: new TimeRange([0, 3 * 1000]),
               brushrange: new TimeRange([0, 3 * 1000]),
-            })
-          }
+            });
+            setTimeAxisTickCountValue(3);
+            setActiveTime({
+              three: true,
+              five: false,
+              seven: false,
+              ten: false,
+            });
+          }}
         >
           3 sec
         </button>
         <button
-          className="border-2 m-2 p-0.5"
-          onClick={() =>
+          className={
+            activeTime.five ? "border-4 m-2 p-1" : "border-2 m-2 p-0.5"
+          }
+          onClick={() => {
             setState({
               ...state,
               timerange: new TimeRange([0, 5 * 1000]),
               brushrange: new TimeRange([0, 5 * 1000]),
-            })
-          }
+            });
+            setTimeAxisTickCountValue(5);
+            setActiveTime({
+              three: false,
+              five: true,
+              seven: false,
+              ten: false,
+            });
+          }}
         >
           5 sec
         </button>
         <button
-          className="border-2 m-2 p-0.5"
-          onClick={() =>
+          className={
+            activeTime.seven ? "border-4 m-2 p-1" : "border-2 m-2 p-0.5"
+          }
+          onClick={() => {
             setState({
               ...state,
               timerange: new TimeRange([0, 7 * 1000]),
               brushrange: new TimeRange([0, 7 * 1000]),
-            })
-          }
+            });
+            setTimeAxisTickCountValue(7);
+            setActiveTime({
+              three: false,
+              five: false,
+              seven: true,
+              ten: false,
+            });
+          }}
         >
           7 sec
         </button>
         <button
-          className="border-2 m-2 p-0.5"
-          onClick={() =>
+          className={activeTime.ten ? "border-4 m-2 p-1" : "border-2 m-2 p-0.5"}
+          onClick={() => {
             setState({
               ...state,
               timerange: new TimeRange([0, 10 * 1000]),
               brushrange: new TimeRange([0, 10 * 1000]),
-            })
-          }
+            });
+            setTimeAxisTickCountValue(10);
+            setActiveTime({
+              three: false,
+              five: false,
+              seven: false,
+              ten: true,
+            });
+          }}
         >
           10 sec
         </button>

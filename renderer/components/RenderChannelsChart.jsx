@@ -9,9 +9,9 @@ import {
 } from "react-timeseries-charts";
 
 import "moment-duration-format";
-import moment from "moment";
+// import moment from "moment";
 import React from "react";
-import { format } from "d3-format";
+// import { format } from "d3-format";
 import _ from "underscore";
 
 const baselineStyles = {
@@ -34,6 +34,7 @@ const RenderChannelsChart = ({
   style,
   handleTimeRangeChange,
   handleTrackerChanged,
+  timeAxisTickCountValue,
   val,
 }) => {
   const {
@@ -45,7 +46,7 @@ const RenderChannelsChart = ({
     // minDuration,
   } = state;
 
-  // console.log(timerange);
+  console.log(timeAxisTickCountValue);
   const durationPerPixel = timerange.duration() / 800 / 1000;
   const rows = [];
 
@@ -149,7 +150,9 @@ const RenderChannelsChart = ({
       onTimeRangeChanged={handleTimeRangeChange}
       onChartResize={(width) => handleChartResize(width)}
       onTrackerChanged={handleTrackerChanged}
-      timeAxisTickCount={15}
+      timeAxisTickCount={timeAxisTickCountValue}
+      // hideTimeAxis={true}
+      showGridPosition="under"
     >
       {rows}
     </ChartContainer>
